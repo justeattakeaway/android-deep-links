@@ -28,7 +28,6 @@ intent-filters for the activity in our `AndroidManifest.xml` as follows.
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
 
-        <data android:scheme="http" />
         <data android:scheme="https" />
         <data android:host="simple.site.com" />
     </intent-filter>
@@ -44,7 +43,7 @@ class ExampleDeepLinkActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         deepLinkRouter {
-            schemes("http|https")
+            schemes("https")
             hosts("simple.site.com")
 
             "/home" mapTo { HomeCommand() }
@@ -57,7 +56,7 @@ class ExampleDeepLinkActivity : ComponentActivity() {
 In the example we map paths `/home` to a `HomeCommand` and also a `/product/[a-zA-Z0-9]*` to
 a `ProductCommand` respectively.
 
-The path part is what follows the host part of the URI such as `http://simple.site.com/products/123`
+The path part is what follows the host part of the URI such as `https://simple.site.com/products/123`
 and in our mapping we define it as a Regex.
 
 For the `ProductCommand` we map it to a Regex that matches a product ID of the
@@ -124,7 +123,7 @@ To test links you can use an ADB shell command to launch your app and give it a 
 example shows how to launch with a link that maps to `HomeCommand`.
 
 ```shell
-adb shell am start -W -a android.intent.action.VIEW -d "http://simple.site.com/home" com.jet.android.links
+adb shell am start -W -a android.intent.action.VIEW -d "https://simple.site.com/home" com.jet.android.links
 ```
 
 In the command we specify which app to launch using the package name `com.jet.android.links`.
@@ -135,7 +134,7 @@ https://developer.android.com/training/app-links/deep-linking#testing-filters
 Similarly to map to `ProductCommand` we can use the URI pattern with the product id as follows.
 
 ```shell
-adb shell am start -W -a android.intent.action.VIEW -d "http://simple.site.com/products/abcd1234" com.jet.android.links
+adb shell am start -W -a android.intent.action.VIEW -d "https://simple.site.com/products/abcd1234" com.jet.android.links
 ```
 
 ### Command Requirements
@@ -180,13 +179,13 @@ requirement.
 
 The following example shows a deep link router setup that maps an incoming deep link with the path
 pattern `/orders/[a-zA-Z0-9]*` to the `OrderDertailsCommand`. This will match on a deep link such
-as `http://requirements.site.com/orders/abcd1234`
+as `https://requirements.site.com/orders/abcd1234`
 
 ```kotlin
 class ExampleDeepLinkActivity : ComponentActivity() {
     private val router by lazy {
         deepLinkRouter {
-            schemes("http|https")
+            schemes("https")
             hosts("requirements.site.com")
 
             "/home" mapTo { HomeCommand() }

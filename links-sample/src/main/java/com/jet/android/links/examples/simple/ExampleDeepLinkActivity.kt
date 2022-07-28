@@ -25,14 +25,14 @@ import com.jet.android.links.examples.shared.commands.ProductCommand
 /**
  * To test these links use ADB
  *
- * eg:- adb shell am start -W -a android.intent.action.VIEW -d "http://simple.site.com/home" com.jet.android.links
+ * eg:- adb shell am start -W -a android.intent.action.VIEW -d "https://simple.site.com/home" com.jet.android.links
  */
 class ExampleDeepLinkActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         deepLinkRouter {
-            schemes("http|https")
+            schemes("https")
             hosts("simple.site.com")
 
             "/home" mapTo { HomeCommand() }

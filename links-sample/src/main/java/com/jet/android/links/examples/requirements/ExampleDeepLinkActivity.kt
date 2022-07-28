@@ -29,12 +29,12 @@ import com.jet.android.links.examples.shared.commands.OrderDetailsCommand
 /**
  * To test these links use ADB
  *
- * eg:- adb shell am start -W -a android.intent.action.VIEW -d "http://requirements.site.com/orders/abcd1234" com.jet.android.links
+ * eg:- adb shell am start -W -a android.intent.action.VIEW -d "https://requirements.site.com/orders/abcd1234" com.jet.android.links
  */
 class ExampleDeepLinkActivity : ComponentActivity() {
     private val router by lazy {
         deepLinkRouter {
-            schemes("http|https")
+            schemes("https")
             hosts("requirements.site.com")
 
             "/home" mapTo { HomeCommand() }
