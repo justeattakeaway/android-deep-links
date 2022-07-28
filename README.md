@@ -42,7 +42,6 @@ We first must designate an activity that will handle incoming deep links and add
 intent-filters for the activity in our `AndroidManifest.xml` as follows.
 
 ```xml
-
 <activity android:name=".examples.simple.ExampleDeepLinkActivity" android:excludeFromRecents="true"
     android:exported="true" android:launchMode="singleTask">
     <intent-filter tools:ignore="AppLinkUrlError">
@@ -268,6 +267,7 @@ If you want to do something different you can provide your own command completio
 router.onCommandComplete(this) {
     when (it) {
         is DeepLinkRouter.Result.Complete -> {
+            // TODO do something before navigate
             it.navigate(this)
             // TODO do something after navigate
             finish()
