@@ -10,25 +10,44 @@ the URI of incoming link Intent's and decide how to act on them.
 
 The Deep Linking API takes care of handling incoming links by mapping URI patterns to `Command`'s.
 
+These `Command`'s can then be used to launch an activity, show a Fragment, show some other UI or anything 
+else you can do in the context of the Activity that handles your deep links.
+
 The approach is inspired by Martin Fowler's Front Controller pattern.
+
+## Adding Dependencies
+
+### Step 1. Add the JitPack repository to your build file
+
+```groovy
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+### Step 2. Add the dependency
+
+```groovy
+dependencies {
+  implementation 'com.jet.android:links:1.0.0'
+}
+```
 
 ## Usage Guide
 
 We first must designate an activity that will handle incoming deep links and add the necessary
 intent-filters for the activity in our `AndroidManifest.xml` as follows.
 
-For a more thorough guide you should consult the official documentation
-here https://developer.android.com/training/app-links
-
 ```xml
-
 <activity android:name=".examples.simple.ExampleDeepLinkActivity" android:excludeFromRecents="true"
     android:exported="true" android:launchMode="singleTask">
     <intent-filter tools:ignore="AppLinkUrlError">
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
 
-        <data android:scheme="http" />
         <data android:scheme="https" />
         <data android:host="simple.site.com" />
     </intent-filter>
@@ -44,7 +63,7 @@ class ExampleDeepLinkActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         deepLinkRouter {
-            schemes("http|https")
+            schemes("https")
             hosts("simple.site.com")
 
             "/home" mapTo { HomeCommand() }
@@ -57,14 +76,13 @@ class ExampleDeepLinkActivity : ComponentActivity() {
 In the example we map paths `/home` to a `HomeCommand` and also a `/product/[a-zA-Z0-9]*` to
 a `ProductCommand` respectively.
 
-The path part is what follows the host part of the URI such as `http://simple.site.com/products/123`
+The path part is what follows the host part of the URI such as `https://simple.site.com/products/123`
 and in our mapping we define it as a Regex.
 
 For the `ProductCommand` we map it to a Regex that matches a product ID of the
 pattern `[a-zA-Z0-9]*`
 
 ### Commands
-
 With our mapping defined and mapped to commands we need to make our commands do something.
 
 Typically a command will just start an activity however it can do more (more on this later).
@@ -82,7 +100,7 @@ class HomeCommand : Command() {
 Looking at the `HomeCommand` example notice the block `navigate { .. }`.
 
 Commands should end with a `navigate {}` block and the block should define what should happen once
-the command is complete. THe reason for this is commands can work with coroutines (more on this
+the command is complete. The reason for this is commands can work with coroutines (more on this
 later)
 and sometimes a command may take longer to complete and also go through Android configuration
 changes. The `navigate {}` block will be called at a moment where its safe to do so in the android
@@ -92,7 +110,7 @@ navigation.
 Other than the lengthy explanation for the navigate block, a command is mostly simple and all it
 does is redirect to an activity, in this case `HomeActivity`.
 
-The next example is the `ProductCommand`. that is mapped to the pattern `/products/[a-zA-Z0-9]*`
+The next example is the `ProductCommand` that is mapped to the pattern `/products/[a-zA-Z0-9]*`
 
 ```kotlin
 class ProductCommand : Command() {
@@ -124,7 +142,7 @@ To test links you can use an ADB shell command to launch your app and give it a 
 example shows how to launch with a link that maps to `HomeCommand`.
 
 ```shell
-adb shell am start -W -a android.intent.action.VIEW -d "http://simple.site.com/home" com.jet.android.links
+adb shell am start -W -a android.intent.action.VIEW -d "https://simple.site.com/home" com.jet.android.links
 ```
 
 In the command we specify which app to launch using the package name `com.jet.android.links`.
@@ -135,7 +153,7 @@ https://developer.android.com/training/app-links/deep-linking#testing-filters
 Similarly to map to `ProductCommand` we can use the URI pattern with the product id as follows.
 
 ```shell
-adb shell am start -W -a android.intent.action.VIEW -d "http://simple.site.com/products/abcd1234" com.jet.android.links
+adb shell am start -W -a android.intent.action.VIEW -d "https://simple.site.com/products/abcd1234" com.jet.android.links
 ```
 
 ### Command Requirements
@@ -180,13 +198,13 @@ requirement.
 
 The following example shows a deep link router setup that maps an incoming deep link with the path
 pattern `/orders/[a-zA-Z0-9]*` to the `OrderDertailsCommand`. This will match on a deep link such
-as `http://requirements.site.com/orders/abcd1234`
+as `https://requirements.site.com/orders/abcd1234`
 
 ```kotlin
 class ExampleDeepLinkActivity : ComponentActivity() {
     private val router by lazy {
         deepLinkRouter {
-            schemes("http|https")
+            schemes("https")
             hosts("requirements.site.com")
 
             "/home" mapTo { HomeCommand() }
@@ -249,6 +267,7 @@ If you want to do something different you can provide your own command completio
 router.onCommandComplete(this) {
     when (it) {
         is DeepLinkRouter.Result.Complete -> {
+            // TODO do something before navigate
             it.navigate(this)
             // TODO do something after navigate
             finish()
@@ -267,6 +286,11 @@ something else.
 
 As well as handling command completion we can also define what happens when the command is cancelled,
 this will occur if the commands coroutine `Job` is cancelled.
+
+## References
+* Handling Android App Links https://developer.android.com/training/app-links
+* Testing Links https://developer.android.com/training/app-links/deep-linking#testing-filters
+* Martin Fowler's Front Controller Pattern https://martinfowler.com/eaaCatalog/frontController.html
 
 ## LICENSE
 Copyright 2022 Just Eat Takeaway
