@@ -63,7 +63,6 @@ For the `ProductCommand` we map it to a Regex that matches a product ID of the
 pattern `[a-zA-Z0-9]*`
 
 ### Commands
-
 With our mapping defined and mapped to commands we need to make our commands do something.
 
 Typically a command will just start an activity however it can do more (more on this later).
@@ -81,7 +80,7 @@ class HomeCommand : Command() {
 Looking at the `HomeCommand` example notice the block `navigate { .. }`.
 
 Commands should end with a `navigate {}` block and the block should define what should happen once
-the command is complete. THe reason for this is commands can work with coroutines (more on this
+the command is complete. The reason for this is commands can work with coroutines (more on this
 later)
 and sometimes a command may take longer to complete and also go through Android configuration
 changes. The `navigate {}` block will be called at a moment where its safe to do so in the android
@@ -91,7 +90,7 @@ navigation.
 Other than the lengthy explanation for the navigate block, a command is mostly simple and all it
 does is redirect to an activity, in this case `HomeActivity`.
 
-The next example is the `ProductCommand`. that is mapped to the pattern `/products/[a-zA-Z0-9]*`
+The next example is the `ProductCommand` that is mapped to the pattern `/products/[a-zA-Z0-9]*`
 
 ```kotlin
 class ProductCommand : Command() {
