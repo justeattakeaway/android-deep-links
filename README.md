@@ -10,15 +10,15 @@ the URI of incoming link Intent's and decide how to act on them.
 
 The Deep Linking API takes care of handling incoming links by mapping URI patterns to `Command`'s.
 
+These `Command`'s can then be used to launch an activity, show a Fragment, show some other UI or anything 
+else you can do in the context of the Activity that handles your deep links.
+
 The approach is inspired by Martin Fowler's Front Controller pattern.
 
 ## Usage Guide
 
 We first must designate an activity that will handle incoming deep links and add the necessary
 intent-filters for the activity in our `AndroidManifest.xml` as follows.
-
-For a more thorough guide you should consult the official documentation
-here https://developer.android.com/training/app-links
 
 ```xml
 
@@ -267,6 +267,11 @@ something else.
 
 As well as handling command completion we can also define what happens when the command is cancelled,
 this will occur if the commands coroutine `Job` is cancelled.
+
+## References
+* Handling Android App Links https://developer.android.com/training/app-links
+* Testing Links https://developer.android.com/training/app-links/deep-linking#testing-filters
+* Martin Fowler's Front Controller Pattern https://martinfowler.com/eaaCatalog/frontController.html
 
 ## LICENSE
 Copyright 2022 Just Eat Takeaway
