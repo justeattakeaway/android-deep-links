@@ -15,6 +15,27 @@ else you can do in the context of the Activity that handles your deep links.
 
 The approach is inspired by Martin Fowler's Front Controller pattern.
 
+## Adding Dependencies
+
+### Step 1. Add the JitPack repository to your build file
+
+```groovy
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+### Step 2. Add the dependency
+
+```groovy
+dependencies {
+  implementation 'com.jet.android:links:1.0.0'
+}
+```
+
 ## Usage Guide
 
 We first must designate an activity that will handle incoming deep links and add the necessary

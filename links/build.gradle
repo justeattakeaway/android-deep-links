@@ -67,7 +67,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.jet.android'
             artifactId = 'links'
-            version = '0.1'
+            version = '1.0.0'
 
             afterEvaluate {
                 from components.release
