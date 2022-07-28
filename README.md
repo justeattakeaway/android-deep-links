@@ -245,7 +245,7 @@ In order to launch the `LoginActivity` we need to tell the router what to do whe
 across a requirement
 
 ```kotlin
-        router.onRequirement(this) {
+router.onRequirement(this) {
     if (it == LoginResult::class.java) {
         startLoginActivity()
     }
