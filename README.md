@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/justeattakeaway/android-deep-links.svg)](https://jitpack.io/#justeattakeaway/android-deep-links)
+
 # Deep Linking API
 
 In an Android app we can define URI patterns that map URI's to activities using intent-filters.
@@ -32,7 +34,7 @@ allprojects {
 
 ```groovy
 dependencies {
-  implementation 'com.jet.android:links:1.0.0'
+  implementation 'com.github.justeattakeaway:android-deep-links:1.0.0'
 }
 ```
 
